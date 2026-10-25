@@ -19,18 +19,38 @@ for revision.
 A fourth node, `review_failed`, handles research that is rejected
 twice.
 
+
+
 ## Architecture Diagram
 
 ```mermaid
 flowchart TD
     A([START]) --> B[Researcher]
-    B --> C[Reviewer]
+    B --> C[Reviewer / Fact Checker]
     C -->|Approved| D[Report Writer]
-    C -->|Rejected, first review| B
-    C -->|Rejected twice| E[Review Failed]
+    C -->|Rejected: first review| B
+    C -->|Rejected: second review| E[Review Failed]
     D --> F([END])
     E --> F
 ```
+
+## State Schema
+
+The shared state is defined using Python's `AgentState` TypedDict.
+
+```mermaid
+classDiagram
+    class AgentState {
+        +str topic
+        +str research
+        +str fact_check
+        +str final_report
+        +str review_status
+        +int review_count
+        +str feedback
+    }
+```
+
 
 ## Shared State
 
